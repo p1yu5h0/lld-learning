@@ -15,10 +15,12 @@ public class DiscountCache {
     }
 
     //singleton, single instance only everywhere
+//    Make the constructor private (so no one can use the new keyword).
     private static class CacheHolder {
         private static final DiscountCache INSTANCE = new DiscountCache();
     }
 
+    //Provide a public static getInstance() method that hands out the single shared copy.
     public static DiscountCache getInstance() {
         return CacheHolder.INSTANCE;
     }
