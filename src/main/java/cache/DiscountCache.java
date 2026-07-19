@@ -14,7 +14,7 @@ public class DiscountCache {
         cache.put("WINTER50", 0.50); // 50% off
     }
 
-    //singleton
+    //singleton, single instance only everywhere
     private static class CacheHolder {
         private static final DiscountCache INSTANCE = new DiscountCache();
     }

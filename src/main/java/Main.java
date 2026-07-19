@@ -8,25 +8,23 @@ import payment.PaymentStrategy;
 
 public class Main {
     public static void main(String[] args) {
-        OrderRepository database = new InMemoryOrderDatabase();
-        CheckoutService checkoutService = new CheckoutService(database);
+        // 1. Create our core dependencies
+        repository.OrderRepository database = new repository.InMemoryOrderDatabase();
+        event.OrderEventManager eventManager = new event.OrderEventManager();
 
-        Order firstOrder = new Order("ORD-1001", 250.20, "piyush@gmail.com");
-        Order secondOrder = new Order("ORD-1002", 350.20, "agrawal@gmail.com");
+        // 2. Subscribe our listeners to the Event Manager
+        eventManager.subscribe(new event.DatabaseObserver(database));
+        eventManager.subscribe(new event.NotificationObserver("EMAIL"));
+        eventManager.subscribe(new event.InventoryObserver());
 
-        // We instantiate the specific algorithms we want to use
-        PaymentStrategy aliceCard = new CreditCardStrategy("Alice Smith", "1234567890124444");
-        PaymentStrategy bobPayPal = new PayPalStrategy("bob@startup.io");
+        // 3. Inject the Event Manager into the Checkout Service
+        service.CheckoutService checkoutService = new service.CheckoutService(eventManager);
 
-        System.out.println("Processing first order ------[USING EMAIL BY FACTORY]------- [USING CREDIT CARD STRATEGY]");
-        checkoutService.processCheckout(firstOrder, "EMAIL", "SAVE20", aliceCard);
+        // 4. Run the code
+        domain.Order order1 = new domain.Order("ORD-1001", 100.00, "customer1@example.com");
+        payment.PaymentStrategy aliceCard = new payment.CreditCardStrategy("Alice Smith", "1234567890124444");
 
-        System.out.println();
-        System.out.println();
-
-        System.out.println("Processing second order ------[USING SMS BY FACTORY]------- [USING PAYPAL STRATEGY]");
-        checkoutService.processCheckout(secondOrder, "SMS", "WINTER50", bobPayPal);
-
-//        checkoutService.processCheckout(secondOrder, "WHATSAPP");
+        System.out.println("--- Processing First Order ---");
+        checkoutService.processCheckout(order1, "SAVE20", aliceCard);
     }
 }
