@@ -1,0 +1,194 @@
+SOLID:-
+
+need to make sure core is as maintainable as possible.
+readability of code should be very high.
+
+While writing classes, in bigger code bases we might face some readability and maintainability challenges, and we need to figure out some nice and innovative ways to implement our classes in a cleaner way.
+
+in lld ->
+we figure out to write as maintainable, as extendible and as readable code as possible
+we focus on how we can write a nice coding implementation for any problem in hand
+
+
+Design Pattern:- it is some coding solution to a king of readability, maintainability and extendibility.
+
+SOLID Principles (basis of all design patterns)
+S:- Single responsibility principle (SRP) :- each class it having only one responsibility
+O:- Open Closed Principle :- open to extension/ closed for modification
+L:- Liskov Substitution Principle (LSP) :- Objects of a superclass shall be replacable with objects of its subclass without breaking anything
+I:- Interface Segregation Principle :- if there is an interface which have lot of methods to implement and those methods will not be relevant for every perticular class that implements this interface then its better to break the interface into multiple small interfaces, then irrelevantly you dont have to override everyone
+D:- Dependency Inversion Principle :- high level modules should not depend on low level modules directly, instead they should depend on abstractions (polymorphic types)
+
+###############################################################################################################################
+
+PATTERNS:-
+Builder Pattern, Singleton Pattern and Factory Pattern
+Facade, Strategy, Observer, Adapter patterns
+Proxy, State Machine and Chain of Responsibility pattern
+
+1) Factory Design Pattern:-
+Your code needs objects of different types but you dont want to use if else statements.
+
+Analogy:-
+Coffee Counter
+One Latte please
+The barista (factory) > knows the recipe and returns the latte (object)
+All drinks fit the same "Drink" Interface: serve() sip()
+
+Latte, Americano, Rspresso > different conrete class implementating the same interface. (Drink)
+
+you want to decouple business code from construction details
+
+Example Usecase:- SENDING BOOKING CONFIRMATIONS
+
+Application > Order
+Confirmaton > Email, SMS, Push
+
+------------------------------------------------------------------------------
+2) Facade Design Pattern:-
+Facade pattern simplfies interaction with complex subsystems.
+
+Analogy:-
+We go to a Hotel for a stay
+For any certain service (room clean, taxi booking, food dining)
+> Call Reception Desk (Facade) --> coordinate and send the request to other department
+
+
+Example Usecase:- PLACE ORDER AT ECOMMERCE
+User > ecommerce app
+> Button > placeOrder
+1) ProductId > availability
+2) ProductId > inventory
+3) CreateOrderId
+4) OrderItems
+5) CalculateTotal
+6) Process Payment
+
+user dont need to go to these steps just click placeOrder and the main system touches all these subSystems.
+
+------------------------------------------------------------------------------
+
+3) Strategy Design Pattern:-
+Users at runtime can choose the behaviour of the system.
+> Behavioural Patten
+
+Analogy
+>Credit Card
+>Paypal
+>UPI
+>Apple Payment
+>Bank Transfer
+>Each payment method has a different algorithm
+
+Common Interface
+pay(amount: number)
+Internally they have implemented different strategies > CreditCardStrategy, UPIStrategy, PaypalStrategy
+
+------------------------------------------------------------------------------
+
+4) State Design Patten
+> Behavioural Patten
+> The behaviour of the object will be altered Based on the internal state of the system.
+The State pattern is a behavioral design pattern that allows an object to completely alter its behavior when its internal state changes. Instead of the object checking what state it is in to decide what to do, the state itself becomes an object.
+> At every time we are holding a state of a particular object
+> Open Closed Principle is maintained (we can add new states easily without actually modifying existing code)
+> Imroved Maintainability (cleaner code, logic for each state is handled differently)
+
+eg can be Vending Machine
+> empty()
+> dispensingProduct()
+> dispensingChange()
+
+eg Google Docs
+Document > Working in a company > Design Doc
+
+Draft > Moderation > Working > Published
+
+------------------------------------------------------------------------------
+
+5) Adapter Pattern
+-> Structural Design Pattern
+
+
+Analogy:-
+India > buy a laptop > charger Indian
+> UK > UK plug points are different plug points
+> travel adaptor is needed
+
+structural design pattern and its used so that two unrelated interfaces can work together.
+The object that joins these unrelated interfaces is called an adaptor.
+
+------------------------------------------------------------------------------
+
+6) Observer Pattern
+> Behavioural Design Pattern
+-> is pub sub patterns
+-> pub sub relationship
+
+Onservers Subscribers
+
+When the Subject's state changes, it notifies all the observes automatically.
+
+eg. Youtube Channel and Subscribers
+Subject(Publisher) > YT Channel
+Event: When a new video is uploaded on the channel
+
+> One to Many dependency
+> Loose Coupling
+> Push vs Pull Model
+> Dynamic Subscription
+> Event Driven Nature
+
+
+------------------------------------------------------------------------------
+
+7) Proxy Pattern
+
+>structural pattern
+
+stand-in middleman object
+proxy control access
+
+eg credit card and bank account
+> Real Object -> Bank account with money
+> proxy -> Credit Card
+
+
+Another example:- CDN
+Real Object: Image <hosted on some server www.>
+Proxy: CDN (Clouflare, AWS CloudFront)
+Client: User browsing the site
+User > image > CDN proxy
+
+note:- both the proxy and real Classes will implement the same Interface
+they both will have the same methods as proxy just acts as a proxy between real class and client
+
+------------------------------------------------------------------------------
+
+8) Builder Pattern
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
