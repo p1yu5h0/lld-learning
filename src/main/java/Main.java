@@ -3,6 +3,7 @@ import event.DatabaseObserver;
 import event.InventoryObserver;
 import event.NotificationObserver;
 import event.OrderEventManager;
+import facade.CheckoutFacade;
 import payment.CreditCardStrategy;
 import payment.PayPalStrategy;
 import payment.PaymentStrategy;
@@ -38,52 +39,29 @@ public class Main {
         // 4. Inject Event Manager into the Checkout Service
         CheckoutService checkoutService = new CheckoutService(eventManager);
 
+
+        //Initializa the new Facade
+        CheckoutFacade checkoutFacade = new CheckoutFacade(checkoutService);
         System.out.println("System boot complete.\n");
 
-
         // ---------------------------------------------------------
-        // PHASE 4: STRATEGY PATTERN IN ACTION
+        // CLIENT EXECUTION (Using the Facade)
         // ---------------------------------------------------------
-        System.out.println("=== PROCESSING ORDERS (STRATEGY & OBSERVER) ===\n");
+        System.out.println("=== PROCESSING ORDERS ===\n");
 
         Order order1 = new Order("ORD-1001", 100.00, "alice@example.com");
-        Order order2 = new Order("ORD-1002", 200.00, "bob@example.com");
-
-        // Instantiate specific algorithms for payment
         PaymentStrategy aliceCard = new CreditCardStrategy("Alice Smith", "1234567890124444");
+
+        Order order2 = new Order("ORD-1002", 200.00, "bob@example.com");
         PaymentStrategy bobPayPal = new PayPalStrategy("bob@startup.io");
 
-        System.out.println("--- Order 1 (Credit Card) ---");
-        // Uses Singleton DiscountCache inside
-        checkoutService.processCheckout(order1, "SAVE20", aliceCard);
+        // The client simply asks the Facade to handle everything!
+        System.out.println("--- Client: Submitting Order 1 ---");
+        checkoutFacade.processCompleteOrder(order1, "SAVE20", aliceCard);
 
-        System.out.println("--- Order 2 (PayPal) ---");
-        checkoutService.processCheckout(order2, "WINTER50", bobPayPal);
+        System.out.println("--- Client: Submitting Order 2 ---");
+        checkoutFacade.processCompleteOrder(order2, "WINTER50", bobPayPal);
 
-
-        // ---------------------------------------------------------
-        // PHASE 6: DECORATOR PATTERN IN ACTION
-        // ---------------------------------------------------------
-        System.out.println("=== DYNAMIC PRICING ENGINE (DECORATOR) ===\n");
-
-        // 1. Create a raw order (Base Price: $100.00)
-        Order order3 = new Order("ORD-1003", 100.00, "customer3@example.com");
-
-        // 2. Start with the Base Component
-        OrderPrice finalPrice = new BaseOrderPrice(order3);
-
-        // 3. Wrap it in Tax (10%)
-        finalPrice = new TaxDecorator(finalPrice);
-
-        // 4. Wrap it in Shipping ($15 flat)
-        finalPrice = new ShippingDecorator(finalPrice);
-
-        // 5. Wrap it in Gift Wrapping ($5 flat)
-        finalPrice = new GiftWrapDecorator(finalPrice);
-
-        // Calculate and Print
-        System.out.println("Receipt: " + finalPrice.getDescription());
-        System.out.println("Total Amount Due: $" + finalPrice.getPrice());
         System.out.println("\n=== ENGINE SHUTDOWN ===");
     }
 }
