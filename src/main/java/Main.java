@@ -34,6 +34,9 @@ public class Main {
         // 3. Register Subscribers (Observers)
         eventManager.subscribe(new DatabaseObserver(database));
         eventManager.subscribe(new NotificationObserver("EMAIL")); // Uses NotificationFactory inside
+        //in factory we just ask a keyword from user and pass it to create a new object as per the keyword
+        //By asking for a simple keyword (like "EMAIL" or "SMS"),
+        //the Factory takes on the burden of knowing exactly which class to instantiate.
         eventManager.subscribe(new InventoryObserver());
 
         // 4. Inject Event Manager into the Checkout Service
@@ -51,6 +54,8 @@ public class Main {
 
         Order order1 = new Order("ORD-1001", 100.00, "alice@example.com");
         PaymentStrategy aliceCard = new CreditCardStrategy("Alice Smith", "1234567890124444");
+        //To use the Strategy pattern, you must first instantiate a concrete implementation of that strategy (the object),
+        //and then pass that object to the system that will eventually use its methods.
 
         Order order2 = new Order("ORD-1002", 200.00, "bob@example.com");
         PaymentStrategy bobPayPal = new PayPalStrategy("bob@startup.io");
